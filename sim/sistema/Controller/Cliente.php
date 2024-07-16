@@ -108,7 +108,53 @@
                 }
        
                }
+               //Método Editar
+        public function editarCliente($dados){
+                try{
+
+                        $this->id = $this->objfnc->base64($dados['func'], 2);
+                        $this->nome = $dados['nome'];
+                        $this->estado = $dados['estado'];
+                        $this->mensagem = $dados['mensagem']; 
+
+
+                        $cst = $this->con->conectar()->prepare("UPDATE clientes SET  nome=:nome, estado=:estado, mensagem=:mensagem WHERE id: idCliente");
+                        $cst->bindParam(":idCliente" , $this->id , PDO::PARAM_INT);
+                        $cst->bindParam(":nome" , $this->nome , PDO::PARAM_STR);
+                        $cst->bindParam(":estado" , $this->estado , PDO::PARAM_STR);
+                        $cst->bindParam(":mensagem" , $this->mensagem , PDO::PARAM_STR);
+                        
+                        if($cst->execute()){
+                                return "ok";
+                        }else{
+                                echo "Não editou";
+                        }
+
+                }catch(PDOException $ex) {
+                        echo $ex;
+                }        
+
+        }
+
+        //Método para Deletar 
+        public function deletarId($dado){
+                try{
+
+                        $this->id = $this->objfnc->base64($dado, 2); 
+                        $cst = $this->con->conectar()->prepare("DELETE FROM clientes WHERE id: idCliente");
+                        $cst->bindParam(":idCliente" , $this->id , PDO::PARAM_INT);
+
+                        if($cst->execute()){
+                           return "ok";
+                        }else{
+                           return "não deletou";         
+                        }
+                
+                }catch(PDOException $ex) {
+                        echo $ex;
+                }        
 
      }
 
+}
 ?>

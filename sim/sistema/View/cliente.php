@@ -2,10 +2,10 @@
 
     require "../../vendor/autoload.php";
     $cliente = new Cliente();
-    $conexao = new Conexao();
+    $objfn = new Funcoes();
 
 
-    if(isset($_POST['enviar'])){
+    if(isset($_POST['btCadastras'])){
         
         if($cliente->inserirCliente($_POST) == "ok" ){
             echo "inserido com suceso";
@@ -14,6 +14,36 @@
             echo "Não deu";
         }
     }
+
+
+
+//editar
+    if(isset($_POST['enviar'])){
+        
+        if($cliente->editarCliente($_POST) == "ok" ){
+            echo "Editado com sucesso";
+            header("Location: ?acao=edit?func" . $objfn->base64($_POST['func'], 1));
+        }else{
+            echo "Não deu";
+        }
+    }
+//Saber ql a açao
+if(isset($_GET['acao'])){
+  
+    switch($_GET['acao']){
+        case "edit" :
+               $func = $cliente->selecionaId($_GET['func']);
+            break;
+        case "delet":
+           if($cliente->deletarId($_GET['func']) =="ok"){
+                echo "Deletado com sucesso";
+           }else{
+            echo "Não Deletou";
+           }
+            break;
+    }
+
+}
 
 ?>
 
